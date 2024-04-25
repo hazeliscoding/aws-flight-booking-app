@@ -12,19 +12,18 @@ exports.handler = async (event: PostConfirmationConfirmSignUpTriggerEvent) => {
   const date = new Date();
   const isoDate = date.toISOString();
 
-  console.log('Event: ', JSON.stringify(event, null, 2));
+  console.log('Event    ', JSON.stringify(event, null, 2));
 
-  const item = {
+  const Item = {
     UserID: id,
     createdAt: isoDate,
     email: event.request.userAttributes.email,
     name: event.request.userAttributes.name,
-    username: event.request.userAttributes.username,
+    username: event.userName,
   };
-
   const command = new PutItemCommand({
     TableName: 'Users',
-    Item: marshall(item),
+    Item: marshall(Item),
     ConditionExpression:
       'attribute_not_exists(UserID) AND attribute_not_exists(email)',
   });
@@ -33,7 +32,6 @@ exports.handler = async (event: PostConfirmationConfirmSignUpTriggerEvent) => {
     await client.send(command);
     return event;
   } catch (e) {
-    console.error(e);
     throw e;
   }
 };
