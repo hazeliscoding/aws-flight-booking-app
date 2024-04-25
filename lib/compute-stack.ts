@@ -6,6 +6,7 @@ import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
 
 import path = require('path');
+import { LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
 
 interface ComputeStackProps extends cdk.StackProps {
   usersTable: Table;
@@ -13,6 +14,7 @@ interface ComputeStackProps extends cdk.StackProps {
 
 export class ComputeStack extends cdk.Stack {
   readonly addUserToTableFunc: NodejsFunction;
+  readonly bookingLambdaIntegration: LambdaIntegration;
 
   constructor(scope: Construct, id: string, props: ComputeStackProps) {
     super(scope, id, props);

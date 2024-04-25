@@ -4,6 +4,7 @@ import * as cdk from 'aws-cdk-lib';
 import { DatabaseStack } from '../lib/database-stack';
 import { ComputeStack } from '../lib/compute-stack';
 import { AuthStack } from '../lib/auth-stack';
+import { ApiStack } from '../lib/api-stack';
 
 const app = new cdk.App();
 
@@ -17,4 +18,8 @@ const computeStack = new ComputeStack(app, `FBS-${environment}-ComputeStack`, {
 });
 const authStack = new AuthStack(app, `FBS-${environment}-AuthStack`, {
   addUserPostConfirmation: computeStack.addUserToTableFunc,
+});
+const apiStack = new ApiStack(app, `FBS-${environment}-ApiStack`, {
+  bookingLambdaIntegration: computeStack.bookingLambdaIntegration,
+  userPool: authStack.userPool,
 });
