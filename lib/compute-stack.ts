@@ -15,6 +15,9 @@ interface ComputeStackProps extends cdk.StackProps {
 export class ComputeStack extends cdk.Stack {
   readonly addUserToTableFunc: NodejsFunction;
   readonly bookingLambdaIntegration: LambdaIntegration;
+  readonly registerBookingFunc: NodejsFunction;
+  readonly sendEmailFunc: NodejsFunction;
+  readonly syncFlightRuleFunc: NodejsFunction;
 
   constructor(scope: Construct, id: string, props: ComputeStackProps) {
     super(scope, id, props);
