@@ -28,7 +28,7 @@ export class EventBridgeStack extends cdk.Stack {
     });
 
     bookFlightRule.addTarget(new LambdaFunction(props.registerBooking));
-    // bookFlightRule.addTarget(new LambdaFunction(props.emailReceipt));
+    bookFlightRule.addTarget(new LambdaFunction(props.emailReceipt));
 
     const syncFlightRule = new Rule(this, 'SyncFlightRule', {
       schedule: Schedule.rate(cdk.Duration.days(1)),
