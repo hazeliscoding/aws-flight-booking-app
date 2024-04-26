@@ -61,11 +61,6 @@ NEXT_PUBLIC_AWS_REGION=
    ```
    cdk deploy
    ```
-
-## Usage 📖
-
-Engage with the step-by-step guidance provided in the Udemy course to effectively utilize the integrated AWS services.
-
 ## Contributing 🤝
 
 Contributions are welcome! Please consider contributing to further enhance the functionality of this project.
