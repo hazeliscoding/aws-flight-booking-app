@@ -4,6 +4,9 @@
 
 This Flight Booking App is developed as a way to get my feet wet with AWS CDK, leveraging AWS CDK to build a scalable flight seat booking system. It integrates various AWS services including DynamoDB, Lambda, Cognito, Amplify, API Gateway, EventBridge, and SES.
 
+## Diagram
+![Architecture Diagram](./docs/awsfbs-diagram.png)
+
 ## Configuration 🛠️
 
 - **Environment Files:** This project uses environment variables to manage configuration settings. Ensure that the `.env` file in the root directory and the `.env.local` file in the `client` directory are properly set up before running the application.
@@ -42,7 +45,6 @@ NEXT_PUBLIC_AWS_REGION=
 - AWS Account
 - Node.js
 - AWS CLI
-- An eagerness to learn through a hands-on approach on Udemy
 
 ## Installation 🔧
 
