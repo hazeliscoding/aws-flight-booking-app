@@ -6,6 +6,7 @@ import { ComputeStack } from '../lib/compute-stack';
 import { AuthStack } from '../lib/auth-stack';
 import { ApiStack } from '../lib/api-stack';
 import { EventBridgeStack } from '../lib/eventbus-stack';
+import { SESStack } from '../lib/ses-stack';
 
 const app = new cdk.App();
 
@@ -35,3 +36,4 @@ const eventStack = new EventBridgeStack(
     emailReceipt: computeStack.sendEmailFunc,
   }
 );
+const sesStack = new SESStack(app, `FBS-${environment}-SESStack`);
