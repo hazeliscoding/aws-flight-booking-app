@@ -4,7 +4,7 @@
 
 This Flight Booking App is developed as a way to get my feet wet with AWS CDK, leveraging AWS CDK to build a scalable flight seat booking system. It integrates various AWS services including DynamoDB, Lambda, Cognito, Amplify, API Gateway, EventBridge, and SES.
 
-## Diagram
+## Diagram 📐
 ![Architecture Diagram](./docs/awsfbs-diagram.png)
 
 ## Configuration 🛠️
