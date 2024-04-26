@@ -12,7 +12,7 @@ interface EventBridgeStackProps extends cdk.StackProps {
 
 export class EventBridgeStack extends cdk.Stack {
   public readonly eventBus: EventBus;
-  
+
   constructor(scope: Construct, id: string, props: EventBridgeStackProps) {
     super(scope, id, props);
 
@@ -33,6 +33,6 @@ export class EventBridgeStack extends cdk.Stack {
     const syncFlightRule = new Rule(this, 'SyncFlightRule', {
       schedule: Schedule.rate(cdk.Duration.days(1)),
     });
-    // syncFlightRule.addTarget(new LambdaFunction(props.syncFlights));
+    syncFlightRule.addTarget(new LambdaFunction(props.syncFlights));
   }
 }

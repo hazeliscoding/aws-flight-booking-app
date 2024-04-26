@@ -27,6 +27,7 @@ export class ComputeStack extends cdk.Stack {
     this.addUserToTableFunc = this.addUserToUsersTable(props);
     this.bookingLambdaIntegration = this.bookSeats(props);
     this.registerBookingFunc = this.registerBooking(props);
+    this.syncFlightRuleFunc = this.syncFlights(props);
   }
 
   addUserToUsersTable(props: ComputeStackProps): NodejsFunction {
@@ -52,7 +53,7 @@ export class ComputeStack extends cdk.Stack {
 
   bookSeats(props: ComputeStackProps): LambdaIntegration {
     const func = new NodejsFunction(this, 'booking', {
-      functionName: 'Booking',
+      functionName: 'booking',
       runtime: Runtime.NODEJS_18_X,
       handler: 'handler',
       entry: path.join(__dirname, `../functions/Booking/index.ts`),
@@ -73,10 +74,28 @@ export class ComputeStack extends cdk.Stack {
 
   registerBooking(props: ComputeStackProps): NodejsFunction {
     const func = new NodejsFunction(this, 'registerBooking', {
-      functionName: 'RegisterBooking',
+      functionName: 'registerBooking',
       runtime: Runtime.NODEJS_18_X,
       handler: 'handler',
       entry: path.join(__dirname, `../functions/RegisterBooking/index.ts`),
+    });
+
+    func.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:*'],
+        resources: [props.seatsTable.tableArn],
+      })
+    );
+
+    return func;
+  }
+
+  syncFlights(props: ComputeStackProps): NodejsFunction {
+    const func = new NodejsFunction(this, 'syncFlights', {
+      functionName: 'syncFlights',
+      runtime: Runtime.NODEJS_18_X,
+      handler: 'handler',
+      entry: path.join(__dirname, `../functions/SyncFlights/index.ts`),
     });
 
     func.addToRolePolicy(
