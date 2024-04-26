@@ -16,6 +16,8 @@ const environment = process.env.ENV || 'dev'; // Default to 'dev' if not specifi
 const dbStack = new DatabaseStack(app, `FBS-${environment}-DatabaseStack`);
 const computeStack = new ComputeStack(app, `FBS-${environment}-ComputeStack`, {
   usersTable: dbStack.usersTable,
+  seatsTable: dbStack.seatsTable,
+  flightTable: dbStack.flightsTable,
 });
 const authStack = new AuthStack(app, `FBS-${environment}-AuthStack`, {
   addUserPostConfirmation: computeStack.addUserToTableFunc,

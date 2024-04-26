@@ -10,6 +10,8 @@ import { LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
 
 interface ComputeStackProps extends cdk.StackProps {
   usersTable: Table;
+  seatsTable: Table;
+  flightTable: Table;
 }
 
 export class ComputeStack extends cdk.Stack {
@@ -23,6 +25,7 @@ export class ComputeStack extends cdk.Stack {
     super(scope, id, props);
 
     this.addUserToTableFunc = this.addUserToUsersTable(props);
+    this.bookingLambdaIntegration = this.bookSeats(props);
   }
 
   addUserToUsersTable(props: ComputeStackProps) {
@@ -44,5 +47,26 @@ export class ComputeStack extends cdk.Stack {
     );
 
     return func;
+  }
+
+  bookSeats(props: ComputeStackProps): LambdaIntegration {
+    const func = new NodejsFunction(this, 'booking', {
+      functionName: 'Booking',
+      runtime: Runtime.NODEJS_18_X,
+      handler: 'handler',
+      entry: path.join(__dirname, `../functions/Booking/index.ts`),
+    });
+
+    func.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:*', 'events:PutEvents'],
+        resources: [
+          props.seatsTable.tableArn,
+          'arn:aws:events:us-east-1:203810148285:event-bus/FlightBookingEventBus',
+        ],
+      })
+    );
+
+    return new LambdaIntegration(func);
   }
 }
