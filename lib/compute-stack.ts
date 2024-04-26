@@ -26,9 +26,10 @@ export class ComputeStack extends cdk.Stack {
 
     this.addUserToTableFunc = this.addUserToUsersTable(props);
     this.bookingLambdaIntegration = this.bookSeats(props);
+    this.registerBookingFunc = this.registerBooking(props);
   }
 
-  addUserToUsersTable(props: ComputeStackProps) {
+  addUserToUsersTable(props: ComputeStackProps): NodejsFunction {
     const func = new NodejsFunction(this, 'addUserFunc', {
       functionName: 'addUserFun',
       runtime: Runtime.NODEJS_18_X,
@@ -62,11 +63,29 @@ export class ComputeStack extends cdk.Stack {
         actions: ['dynamodb:*', 'events:PutEvents'],
         resources: [
           props.seatsTable.tableArn,
-          'arn:aws:events:us-east-1:203810148285:event-bus/FlightBookingEventBus',
+          'arn:aws:events:us-east-1:203810148285:event-bus/FlightBookingEventBus', // TODO: don't do this is a real production app
         ],
       })
     );
 
     return new LambdaIntegration(func);
+  }
+
+  registerBooking(props: ComputeStackProps): NodejsFunction {
+    const func = new NodejsFunction(this, 'registerBooking', {
+      functionName: 'RegisterBooking',
+      runtime: Runtime.NODEJS_18_X,
+      handler: 'handler',
+      entry: path.join(__dirname, `../functions/RegisterBooking/index.ts`),
+    });
+
+    func.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:*'],
+        resources: [props.seatsTable.tableArn],
+      })
+    );
+
+    return func;
   }
 }

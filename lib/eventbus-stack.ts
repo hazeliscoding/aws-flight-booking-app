@@ -12,6 +12,7 @@ interface EventBridgeStackProps extends cdk.StackProps {
 
 export class EventBridgeStack extends cdk.Stack {
   public readonly eventBus: EventBus;
+  
   constructor(scope: Construct, id: string, props: EventBridgeStackProps) {
     super(scope, id, props);
 
@@ -26,7 +27,7 @@ export class EventBridgeStack extends cdk.Stack {
       },
     });
 
-    // bookFlightRule.addTarget(new LambdaFunction(props.registerBooking));
+    bookFlightRule.addTarget(new LambdaFunction(props.registerBooking));
     // bookFlightRule.addTarget(new LambdaFunction(props.emailReceipt));
 
     const syncFlightRule = new Rule(this, 'SyncFlightRule', {
